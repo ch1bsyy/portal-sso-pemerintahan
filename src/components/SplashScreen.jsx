@@ -1,0 +1,97 @@
+/* eslint-disable no-unused-vars */
+// SplashScreen.jsx
+import React from "react";
+import { motion } from "motion/react";
+import Logo from "../assets/logo-siladan.png";
+
+function SplashScreen() {
+  return (
+    <div className="relative flex items-center justify-center min-h-screen w-screen bg-linear-to-br from-blue-900 via-indigo-900 to-purple-900 overflow-hidden">
+      <div className="flex flex-col items-center text-center space-y-2 md:space-y-6 z-10">
+        {/* Logo */}
+        <div className="flex flex-row flex-wrap items-center justify-center">
+          <motion.img
+            src={Logo}
+            alt="Siladan Logo"
+            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{
+              duration: 1.2,
+              easing: "ease-out",
+            }}
+          />
+          <motion.img
+            src={Logo}
+            alt="Siladan Logo"
+            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{
+              duration: 1.2,
+              easing: "ease-out",
+            }}
+          />
+          <motion.img
+            src={Logo}
+            alt="Siladan Logo"
+            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{
+              duration: 1.2,
+              easing: "ease-out",
+            }}
+          />
+        </div>
+
+        {/* App Name */}
+        <motion.h1
+          className="text-4xl md:text-5xl font-extrabold text-white tracking-wide drop-shadow-lg"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.9,
+            delay: 0.7,
+            easing: "ease-out",
+          }}
+        >
+          Portal SSO Pemerintahan
+        </motion.h1>
+
+        {/* Description */}
+        <motion.p
+          className="px-6 md:px-0 text-base md:text-lg text-gray-200 max-w-xl leading-relaxed mt-2"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.9,
+            delay: 1.2,
+            easing: "ease-out",
+          }}
+        >
+          Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan
+          Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
+        </motion.p>
+      </div>
+
+      {/* Soft glow animation behind the logo */}
+      <motion.div
+        className="absolute w-72 h-72 bg-indigo-500/30 blur-3xl rounded-full"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{
+          opacity: [0.3, 0.7, 0.3],
+          scale: [0.9, 1.2, 0.9],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "mirror",
+          easing: "ease-in-out",
+        }}
+      />
+    </div>
+  );
+}
+
+export default SplashScreen;

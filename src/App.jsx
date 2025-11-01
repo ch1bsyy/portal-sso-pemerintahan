@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import SplashScreen from "./components/SplashScreen";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
+  const [isInitializing, setIsInitializing] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const showSplash = location.pathname === "/";
+
+  useEffect(() => {
+    if (showSplash) {
+      const timer = setTimeout(() => {
+        setIsInitializing(false);
+        navigate("/login", { replace: true });
+      }, 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsInitializing(false);
+    }
+  }, [showSplash, navigate]);
+
+  if (isInitializing && showSplash) {
+    return <SplashScreen />;
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-linear-to-r from-cyan-950 via-pink-950 to-slate-950 text-white">
-      <h1 className="text-4xl font-bold text-blue-cyan  max-w-3xl text-center leading-relaxed">
-        Portal SSO Pemerintahan - Ayo Rek Bantai! Makan Sayang
-      </h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
   );
 }
 
