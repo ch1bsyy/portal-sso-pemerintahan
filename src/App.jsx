@@ -15,7 +15,7 @@ function App() {
       const timer = setTimeout(() => {
         setIsInitializing(false);
         navigate("/login", { replace: true });
-      }, 3000);
+      }, 6300);
       return () => clearTimeout(timer);
     } else {
       setIsInitializing(false);

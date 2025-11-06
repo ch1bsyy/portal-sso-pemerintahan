@@ -1,83 +1,67 @@
 /* eslint-disable no-unused-vars */
-// SplashScreen.jsx
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import SaktiLogo from "../assets/logo-sakti.png";
 import SiladanLogo from "../assets/logo-siladan.png";
-import SimaraLogo from "../assets/logo-simara-2.png";
+import SimaraLogo from "../assets/logo-simara.png";
 
 function SplashScreen() {
+  const logos = [
+    { src: SaktiLogo, className: "w-36 h-36 md:w-45 md:h-45" },
+    { src: SiladanLogo, className: "w-46 h-46 md:w-62 md:h-62" },
+    { src: SimaraLogo, className: "w-44 h-44 md:w-54 md:h-54" },
+  ];
+
+  const [currentLogo, setCurrentLogo] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLogo((prev) => (prev + 1) % logos.length);
+    }, 1800);
+
+    return () => clearInterval(interval);
+  }, [logos.length]);
+
   return (
-    <div className="relative flex items-center justify-center min-h-screen w-screen bg-linear-to-br from-blue-900 via-indigo-900 to-purple-900 overflow-hidden">
-      <div className="flex flex-col items-center text-center space-y-2 md:space-y-6 z-10">
+    <div className="relative flex items-center justify-center min-h-screen w-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 overflow-hidden">
+      <div className="flex flex-col items-center text-center z-10">
         {/* Logo */}
-        <div className="flex flex-row flex-wrap items-center justify-center">
-          <motion.img
-            src={SaktiLogo}
-            alt="Sakti Logo"
-            className="w-25 h-25 md:w-30 md:h-30 object-contain drop-shadow-2xl"
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{
-              duration: 1.2,
-              easing: "ease-out",
-            }}
-          />
-          <motion.img
-            src={SiladanLogo}
-            alt="Siladan Logo"
-            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl rounded-full"
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{
-              duration: 1.2,
-              easing: "ease-out",
-            }}
-          />
-          <motion.img
-            src={SimaraLogo}
-            alt="Siladan Logo"
-            className="w-40 h-40 md:w-44 md:h-44 object-contain drop-shadow-2xl"
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{
-              duration: 1.2,
-              easing: "ease-out",
-            }}
-          />
+        <div className="flex items-center justify-center relative h-46 md:h-62 w-46 md:w-62">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentLogo}
+              src={logos[currentLogo].src}
+              alt={`Logo ${currentLogo + 1}`}
+              className={`absolute inset-0 object-contain drop-shadow-2xl mx-auto ${logos[currentLogo].className}`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.9, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
         </div>
 
-        {/* App Name */}
         <motion.h1
-          className="text-4xl md:text-5xl font-extrabold text-white tracking-wide drop-shadow-lg"
+          className="text-3xl md:text-5xl font-extrabold text-white tracking-wide drop-shadow-lg"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.9,
-            delay: 0.7,
-            easing: "ease-out",
-          }}
+          transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
           Portal SSO Pemerintahan
         </motion.h1>
 
-        {/* Description */}
         <motion.p
-          className="px-6 md:px-0 text-base md:text-lg text-gray-200 max-w-xl leading-relaxed mt-2"
+          className="px-6 mt-6 md:px-0 text-sm md:text-lg text-gray-200 max-w-xl leading-relaxed"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.9,
-            delay: 1.2,
-            easing: "ease-out",
-          }}
+          transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
         >
           Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan
           Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
         </motion.p>
       </div>
 
-      {/* Soft glow animation behind the logo */}
+      {/* Soft Glow */}
       <motion.div
         className="absolute w-72 h-72 bg-indigo-500/30 blur-3xl rounded-full"
         initial={{ opacity: 0, scale: 0.5 }}
@@ -89,7 +73,7 @@ function SplashScreen() {
           duration: 4,
           repeat: Infinity,
           repeatType: "mirror",
-          easing: "ease-in-out",
+          ease: "easeInOut",
         }}
       />
     </div>
