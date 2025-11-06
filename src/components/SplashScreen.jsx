@@ -2,7 +2,9 @@
 // SplashScreen.jsx
 import React from "react";
 import { motion } from "motion/react";
-import Logo from "../assets/logo-siladan.png";
+import SaktiLogo from "../assets/logo-sakti.png";
+import SiladanLogo from "../assets/logo-siladan.png";
+import SimaraLogo from "../assets/logo-simara-2.png";
 
 function SplashScreen() {
   return (
@@ -11,9 +13,9 @@ function SplashScreen() {
         {/* Logo */}
         <div className="flex flex-row flex-wrap items-center justify-center">
           <motion.img
-            src={Logo}
-            alt="Siladan Logo"
-            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            src={SaktiLogo}
+            alt="Sakti Logo"
+            className="w-25 h-25 md:w-30 md:h-30 object-contain drop-shadow-2xl"
             initial={{ scale: 0, rotate: -180, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
             transition={{
@@ -22,9 +24,9 @@ function SplashScreen() {
             }}
           />
           <motion.img
-            src={Logo}
+            src={SiladanLogo}
             alt="Siladan Logo"
-            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl rounded-full"
             initial={{ scale: 0, rotate: -180, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
             transition={{
@@ -33,9 +35,9 @@ function SplashScreen() {
             }}
           />
           <motion.img
-            src={Logo}
+            src={SimaraLogo}
             alt="Siladan Logo"
-            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-2xl"
+            className="w-40 h-40 md:w-44 md:h-44 object-contain drop-shadow-2xl"
             initial={{ scale: 0, rotate: -180, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
             transition={{
