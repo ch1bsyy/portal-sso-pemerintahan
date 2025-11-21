@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import LoginPage from "./pages/LoginPage";
+import LandingPageSSO from "./pages/LandingPageSSO";
 
 function App() {
   const [isInitializing, setIsInitializing] = useState(true);
@@ -14,7 +21,14 @@ function App() {
     if (showSplash) {
       const timer = setTimeout(() => {
         setIsInitializing(false);
-        navigate("/login", { replace: true });
+
+        // check Login Dummy
+        const user = localStorage.getItem("sso_user");
+        if (!user) {
+          navigate("/login", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       }, 6300);
       return () => clearTimeout(timer);
     } else {
@@ -30,6 +44,8 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard" element={<LandingPageSSO />} />
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }

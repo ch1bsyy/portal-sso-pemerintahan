@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import { DUMMY_USERS } from "../data/users";
 
 const LoginPage = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -6,28 +9,36 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorEmail, setErrorEmail] = useState("");
+  const [error, setError] = useState("");
+  // const [errorEmail, setErrorEmail] = useState("");
+  const navigate = useNavigate();
 
   // Validate email format
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+  // const validateEmail = (email) => {
+  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return regex.test(email);
+  // };
 
   // Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateEmail(email)) {
-      setErrorEmail("Format email tidak valid");
-      return;
-    }
-
-    setErrorEmail("");
+    setError("");
     setLoading(true);
 
+    // Login Simulation
     setTimeout(() => {
-      alert("Login berhasil!");
+      const user = DUMMY_USERS.find(
+        (u) => u.email === email && u.password === password
+      );
+
+      if (user) {
+        localStorage.setItem("sso_user", JSON.stringify(user));
+        alert("Login berhasil!");
+        navigate("/dashboard");
+      } else {
+        setError("Email atau password salah. Silakan coba lagi");
+      }
       setLoading(false);
     }, 1200);
   };
@@ -44,36 +55,36 @@ const LoginPage = () => {
         className="hidden md:flex w-1/2 p-10 items-center justify-center"
         style={{ backgroundColor: "#4B6184" }}
       >
-      <div className="text-center">
-        <div className="flex justify-center items-center gap-10 mt-4">
-          <img
-            src="/src/assets/logo-sakti.png"
-            alt="Logo Sakti"
-            className="h-24 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
+        <div className="text-center">
+          <div className="flex justify-center items-center gap-10 mt-4">
+            <img
+              src="/src/assets/logo-sakti.png"
+              alt="Logo Sakti"
+              className="h-24 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
+            />
 
-          <img
-            src="/src/assets/logo-siladan.png"
-            alt="Logo Siladan"
-            className="h-40 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
+            <img
+              src="/src/assets/logo-siladan.png"
+              alt="Logo Siladan"
+              className="h-40 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
+            />
 
-          <img
-            src="/src/assets/logo-simara.png"
-            alt="Logo Simara"
-            className="h-28 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
+            <img
+              src="/src/assets/logo-simara.png"
+              alt="Logo Simara"
+              className="h-28 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+
+          <h1 className="text-3xl font-extrabold mt-8 text-white">
+            PORTAL SSO PEMERINTAHAN
+          </h1>
+
+          <p className="text-sm mt-2 text-gray-200 opacity-90 leading-relaxed">
+            Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan
+            Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
+          </p>
         </div>
-
-        <h1 className="text-3xl font-bold mt-8 text-white">
-          PORTAL SSO PEMERINTAHAN
-        </h1>
-
-        <p className="text-sm mt-2 text-gray-200 opacity-90">
-          Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
-        </p>
-      </div>
-
       </div>
 
       {/* RIGHT SECTION */}
@@ -130,9 +141,9 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {errorEmail && (
+              {/* {errorEmail && (
                 <p className="text-red-400 text-sm mt-1">{errorEmail}</p>
-              )}
+              )} */}
             </div>
 
             {/* PASSWORD */}
@@ -196,6 +207,12 @@ const LoginPage = () => {
                 </span>
               </div>
             </div>
+
+            {error && (
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm text-center">
+                {error}
+              </div>
+            )}
 
             {/* BUTTON */}
             <button

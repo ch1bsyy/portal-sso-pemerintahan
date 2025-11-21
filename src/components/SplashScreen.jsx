@@ -23,7 +23,7 @@ function SplashScreen() {
   }, [logos.length]);
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen w-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 overflow-hidden">
+    <div className="relative flex items-center justify-center min-h-screen w-screen bg-linear-to-br from-blue-900 via-indigo-900 to-purple-900 overflow-hidden">
       <div className="flex flex-col items-center text-center z-10">
         {/* Logo */}
         <div className="flex items-center justify-center relative h-46 md:h-62 w-46 md:w-62">
