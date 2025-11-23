@@ -24,7 +24,7 @@ function App() {
       const timer = setTimeout(() => {
         setIsInitializing(false);
 
-        // check Login Dummy
+        // Login Dummy Check
         const user = localStorage.getItem("sso_user");
         if (!user) {
           navigate("/login", { replace: true });
@@ -47,8 +47,11 @@ function App() {
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<LandingPageSSO />} />
+
+      {/* Tambahan route dari versi kamu */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

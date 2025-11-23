@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DUMMY_USERS } from "../data/users";
 
 const LoginPage = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -7,11 +8,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorEmail, setErrorEmail] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  // SIMPLE TOAST (tanpa library)
+  // SIMPLE TOAST
   const toast = (message, type = "success") => {
     const div = document.createElement("div");
     div.innerText = message;
@@ -26,15 +27,10 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email.trim()) {
-      setErrorEmail("Username tidak boleh kosong");
-      return;
-    }
-
-    setErrorEmail("");
+    setError("");
     setLoading(true);
 
+    // ==== BACKEND LOGIN (punya kamu) ====
     try {
       const response = await fetch(
         "https://manpro-473802.et.r.appspot.com/api/v1/auth/login",
@@ -55,15 +51,27 @@ const LoginPage = () => {
         localStorage.setItem("user", JSON.stringify(data.user || data));
 
         navigate(`/dashboard/${data.user?.username || data.username}`);
-      } else {
-        toast(data.message || "Username atau password salah", "error");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
+        return;
+          }
+    } catch {
       toast("Gagal terhubung ke server", "error");
-    } finally {
-      setLoading(false);
     }
+
+    // ==== DUMMY LOGIN (punya temanmu) ====
+    const dummyUser = DUMMY_USERS.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (dummyUser) {
+      localStorage.setItem("sso_user", JSON.stringify(dummyUser));
+      toast("Login berhasil (dummy)!", "success");
+      navigate("/dashboard");
+    } else {
+      setError("Username atau password salah.");
+      toast("Login gagal", "error");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -71,53 +79,44 @@ const LoginPage = () => {
       className={`min-h-screen flex transition-all duration-300 ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-800"
       }`}
-      style={{ fontFamily: "Inter, sans-serif" }}
     >
       {/* LEFT SECTION */}
       <div
         className="hidden md:flex w-1/2 p-10 items-center justify-center"
         style={{ backgroundColor: "#4B6184" }}
       >
-<div className="text-center">
-        <div className="flex justify-center items-center gap-10 mt-4">
-          <img
-            src="/src/assets/logo-sakti.png"
-            alt="Logo Sakti"
-            className="h-24 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
+        <div className="text-center">
+          <div className="flex justify-center items-center gap-10 mt-4">
+            <img
+              src="/src/assets/logo-sakti.png"
+              className="h-24 drop-shadow-xl"
+            />
+            <img
+              src="/src/assets/logo-siladan.png"
+              className="h-40 drop-shadow-xl"
+            />
+            <img
+              src="/src/assets/logo-simara.png"
+              className="h-28 drop-shadow-xl"
+            />
+          </div>
 
-          <img
-            src="/src/assets/logo-siladan.png"
-            alt="Logo Siladan"
-            className="h-40 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
-
-          <img
-            src="/src/assets/logo-simara.png"
-            alt="Logo Simara"
-            className="h-28 object-contain drop-shadow-xl transition-transform duration-300 hover:scale-105"
-          />
+          <h1 className="text-3xl font-bold mt-8 text-white">
+            PORTAL SSO PEMERINTAHAN
+          </h1>
+          <p className="text-sm mt-2 text-gray-200 opacity-90">
+            Sistem Informasi Manajemen Aset dan Pengaduan
+          </p>
         </div>
-
-        <h1 className="text-3xl font-bold mt-8 text-white">
-          PORTAL SSO PEMERINTAHAN
-        </h1>
-
-        <p className="text-sm mt-2 text-gray-200 opacity-90">
-          Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
-        </p>
-      </div>
-
       </div>
 
       {/* RIGHT SECTION */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div
-          className={`p-8 rounded-2xl shadow-xl w-full max-w-md border transition-all duration-300 ${
+          className={`p-8 rounded-2xl shadow-xl w-full max-w-md border ${
             darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"
           }`}
         >
-          {/* DARK MODE SWITCH */}
           <div className="flex justify-end mb-3">
             <label className="flex items-center cursor-pointer">
               <span className="mr-2 text-sm">
@@ -156,11 +155,8 @@ const LoginPage = () => {
                 placeholder="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none"
+                className="w-full p-3 rounded-md bg-gray-700 text-white"
               />
-              {errorEmail && (
-                <p className="text-red-400 text-sm mt-1">{errorEmail}</p>
-              )}
             </div>
 
             {/* PASSWORD */}
@@ -172,14 +168,14 @@ const LoginPage = () => {
                   placeholder="Masukkan password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none"
+                  className="w-full p-3 rounded-md bg-gray-700 text-white"
                 />
 
                 <span
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-3 cursor-pointer opacity-70 hover:opacity-100"
                 >
-                  {showPassword ? (
+                 {showPassword ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -220,19 +216,25 @@ const LoginPage = () => {
               </div>
             </div>
 
-
             {/* LUPA PASSWORD */}
             <div className="text-right">
               <button
                 type="button"
                 onClick={() => navigate("/forgot-password")}
-                className="text-sm text-blue-500 hover:text-blue-600"
+                className="text-sm text-blue-500 hover:text-blue-700"
               >
                 Forgot password?
               </button>
             </div>
 
-            {/* BUTTON */}
+            {/* ERROR */}
+            {error && (
+              <div className="p-3 rounded-lg bg-red-500/10 text-red-400 text-sm text-center">
+                {error}
+              </div>
+            )}
+
+            {/* SUBMIT */}
             <button
               type="submit"
               disabled={loading}
