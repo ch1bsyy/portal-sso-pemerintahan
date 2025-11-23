@@ -41,7 +41,7 @@ const LandingPageSSO = () => {
     {
       id: "siladan",
       name: "SILADAN",
-      desc: "Portal layanan pengaduan aset daerah dan monitoring tindak lanjut perbaikan secara real-time.",
+      desc: "Portal layanan resmi untuk pengaduan aset dan permintaan layanan pemerintahan dengan sistem pemantauan real-time.",
       logo: SiladanLogo,
       color: "from-emerald-500 to-teal-400",
       imgClass: `h-38 md:h-40 w-auto scale-125 origin-center mt-2 filter drop-shadow-2xl brightness-80 ${
