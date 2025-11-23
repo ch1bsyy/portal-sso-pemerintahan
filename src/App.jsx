@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import LoginPage from "./pages/LoginPage";
+import LandingPageSSO from "./pages/LandingPageSSO";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -16,9 +23,15 @@ function App() {
     if (showSplash) {
       const timer = setTimeout(() => {
         setIsInitializing(false);
-        navigate("/login", { replace: true });
-      }, 6300);
 
+        // check Login Dummy
+        const user = localStorage.getItem("sso_user");
+        if (!user) {
+          navigate("/login", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      }, 6300);
       return () => clearTimeout(timer);
     } else {
       setIsInitializing(false);
@@ -31,17 +44,12 @@ function App() {
 
   return (
     <Routes>
-      {/* SPLASH */}
-      <Route path="/" element={<SplashScreen />} />
-
-      {/* LOGIN */}
+      <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
-
-      {/* FORGOT PASSWORD */}
+      <Route path="/dashboard" element={<LandingPageSSO />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-
-      {/* RESET PASSWORD */}
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }
