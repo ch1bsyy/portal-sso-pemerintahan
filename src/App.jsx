@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import LoginPage from "./pages/LoginPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const [isInitializing, setIsInitializing] = useState(true);
@@ -16,6 +18,7 @@ function App() {
         setIsInitializing(false);
         navigate("/login", { replace: true });
       }, 6300);
+
       return () => clearTimeout(timer);
     } else {
       setIsInitializing(false);
@@ -28,8 +31,17 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      {/* SPLASH */}
+      <Route path="/" element={<SplashScreen />} />
+
+      {/* LOGIN */}
       <Route path="/login" element={<LoginPage />} />
+
+      {/* FORGOT PASSWORD */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      {/* RESET PASSWORD */}
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }
