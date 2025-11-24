@@ -105,7 +105,7 @@ const LoginPage = () => {
             PORTAL SSO PEMERINTAHAN
           </h1>
           <p className="text-sm mt-2 text-gray-200 opacity-90">
-            Sistem Informasi Manajemen Aset dan Pengaduan
+            Sistem Informasi Manajemen Aset, Permintaan Layanan dan Pengaduan Aset, serta Manajemen Perubahan di Organisasi Perangkat Daerah
           </p>
         </div>
       </div>
